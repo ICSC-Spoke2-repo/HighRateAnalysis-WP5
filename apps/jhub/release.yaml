@@ -1,0 +1,22 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: jhub 
+spec:
+  releaseName: jhub 
+  chart:
+    spec:
+      chart: jhubaas 
+      version: "3.0.5"
+      sourceRef:
+        kind: HelmRepository
+        name: dodas 
+        namespace: flux-system
+  interval: 5m
+  install:
+    timeout: 5m
+    remediation:
+      retries: 3
+  valuesFrom:
+    - kind: ConfigMap
+      name: jhub-values 

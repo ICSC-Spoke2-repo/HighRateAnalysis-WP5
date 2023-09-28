@@ -1,0 +1,70 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ssh-fwd
+  namespace: af
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ssh-fwd
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp:
+      labels:
+        app.kubernetes.io/name: ssh-fwd
+    spec:
+      containers:
+      - image: redis:6.2.5
+        imagePullPolicy: IfNotPresent
+        name: redis
+        resources:
+          limits:
+            cpu: '1'
+            memory: 1G
+          requests:
+            cpu: 900m
+            memory: 900M
+        terminationMessagePath: "/dev/termination-log"
+        terminationMessagePolicy: File
+      - env:
+        - name: JHUB_URL
+          value: https://cms-it-hub.cloud.cnaf.infn.it
+        image: ghcr.io/comp-dev-cms-ita/ssh-forwarder:v0.0.3
+        imagePullPolicy: Always
+        name: ssh-fwd
+        resources:
+          limits:
+            cpu: '1'
+            memory: 1G
+          requests:
+            cpu: 900m
+            memory: 900M
+        terminationMessagePath: "/dev/termination-log"
+        terminationMessagePolicy: File
+      - env:
+        - name: JHUB_URL
+          value: https://cms-it-hub.cloud.cnaf.infn.it
+        image: ghcr.io/comp-dev-cms-ita/ssh-listener:v0.0.3
+        imagePullPolicy: Always
+        name: listener
+        resources:
+          limits:
+            cpu: '1'
+            memory: 1G
+          requests:
+            cpu: 900m
+            memory: 900M
+        terminationMessagePath: "/dev/termination-log"
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      priorityClassName: system-node-critical
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
