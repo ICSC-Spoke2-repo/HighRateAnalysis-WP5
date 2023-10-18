@@ -1,0 +1,14 @@
+{{- if .Values.spark.enabled }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: default-pyspark
+subjects:
+- kind: User
+  name: system:serviceaccount:default:default
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: edit
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}

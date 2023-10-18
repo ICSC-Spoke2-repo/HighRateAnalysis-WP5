@@ -1,0 +1,237 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "properties": {
+        "ssh-forwarder": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
+                },
+                "redis": {
+                    "type": "object",
+                    "properties": {
+                        "image": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "pullPolicy": {
+                                    "type": "string"
+                                },
+                                "tag": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "limits": {
+                            "type": "object",
+                            "properties": {
+                                "cpu": {
+                                    "type": "integer"
+                                },
+                                "memory": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "requests": {
+                            "type": "object",
+                            "properties": {
+                                "cpu": {
+                                    "type": "string"
+                                },
+                                "memory": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "sshFWD": {
+                    "type": "object",
+                    "properties": {
+                        "image": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "pullPolicy": {
+                                    "type": "string"
+                                },
+                                "tag": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "limits": {
+                            "type": "object",
+                            "properties": {
+                                "cpu": {
+                                    "type": "integer"
+                                },
+                                "memory": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "nodePort": {
+                            "type": "integer"
+                        },
+                        "requests": {
+                            "type": "object",
+                            "properties": {
+                                "cpu": {
+                                    "type": "string"
+                                },
+                                "memory": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "sshListener": {
+                    "type": "object",
+                    "properties": {
+                        "image": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "pullPolicy": {
+                                    "type": "string"
+                                },
+                                "tag": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "limits": {
+                            "type": "object",
+                            "properties": {
+                                "cpu": {
+                                    "type": "integer"
+                                },
+                                "memory": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "requests": {
+                            "type": "object",
+                            "properties": {
+                                "cpu": {
+                                    "type": "string"
+                                },
+                                "memory": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "ingress": {
+            "type": "boolean",
+            "form": true,
+            "title": "Use a custom hostname",
+            "description": "Enable the ingress resource that allows you to access the JHUB installation."
+        },
+        "hostname": {
+                    "type": "string",
+                    "form": true,
+                    "hidden": {
+                        "value": false,
+                        "path": "ingress"
+                    },
+                    "title": "Hostname",
+                    "description": "The custom hostname to contact for the login into JHUB"
+        },
+        "htcondor": {
+                    "title": "Enable HTCondor integration",
+                    "description": "Allow the notebook to setup the htcondor environment",
+                    "type": "boolean",
+                    "form": true
+        },        
+        "spark": {
+                    "type": "object",
+                    "title": "Enable spark submission",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "form": true
+                        }
+                    }
+        },
+        "jupyterhub": {
+            "type": "object",
+            "properties": {
+                "cull": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "form": true,
+                            "title": "Enable removal of idle notebooks"
+                        }
+                    }
+                },
+                "hub": {
+                    "type": "object",
+                    "properties": {
+                        "extraEnv": {
+                            "type": "object",
+                            "properties": {
+                                "ACCESS_TOKEN": {
+                                    "type": "string",
+                                    "form": true,
+                                    "title": "Insert you IAM access token",
+                                    "description": "Enable the cluster to instantiate a IAM Client for you"
+                                },
+                                "ADMIN_OAUTH_GROUPS": {
+                                    "type": "string"
+                                },
+                                "OAUTH_CALLBACK_URL": {
+                                    "type": "string",
+                                    "form": true
+                                },
+                                "OAUTH_ENDPOINT": {
+                                    "type": "string"
+                                },
+                                "OAUTH_GROUPS": {
+                                    "type": "string"
+                                },
+                                "WITH_GPU": {
+                                    "type": "string"
+                                },
+                                "HTCONDOR_COLLECTOR_URL": {
+                                    "type": "string",
+                                    "title": "HTCondor collector url",
+                                    "hidden": {
+                                        "value": false,
+                                        "path": "htcondor"
+                                    },
+                                    "form": true
+                                },
+                                "HTCONDOR_SCHEDD_NAME": {
+                                    "type": "string",
+                                    "title": "HTCondor schedd name",
+                                    "hidden": {
+                                        "value": false,
+                                        "path": "htcondor"
+                                    },
+                                    "form": true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

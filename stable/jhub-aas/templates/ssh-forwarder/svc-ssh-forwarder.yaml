@@ -1,0 +1,31 @@
+{{- if .Values.sshForwarder.enabled }}
+apiVersion: v1 
+kind: Service 
+metadata:
+  name: ssh-fwd 
+spec:
+  type: NodePort 
+  ports:
+    - port: 8022 
+      nodePort: {{ .Values.sshForwarder.sshFWD.nodePort }}
+      protocol: TCP
+      name: ssh-fwd 
+  selector:
+    app.kubernetes.io/name: ssh-fwd
+
+---
+
+apiVersion: v1 
+kind: Service 
+metadata:
+  name: ssh-listener
+spec:
+  type: ClusterIP 
+  ports:
+    - port: 8122 
+      targetPort: 8122
+      protocol: TCP
+      name: listener 
+  selector:
+    app.kubernetes.io/name: ssh-fwd
+{{- end }}

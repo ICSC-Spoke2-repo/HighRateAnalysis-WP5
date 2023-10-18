@@ -1,34 +1,139 @@
+#overide defaault ingress
 hostname: cms-it-hub.cloud.cnaf.infn.it
-htcondor: true
 ingress: true
+# Show options for htcondor integration
+htcondor: false
+
+sshForwarder:
+  enabled: false
+  redis:
+    image: 
+      pullPolicy: IfNotPresent
+      name: redis
+      tag: 6.2.5
+    requests: 
+      cpu: 900m
+      memory: 900M
+    limits:
+      cpu: 1
+      memory: 1G
+  sshListener:
+    image:
+      pullPolicy: Always 
+      name: dodasts/dask-ssh-listener 
+      tag: v0.1.1
+    requests: 
+      cpu: 900m
+      memory: 900M
+    limits:
+      cpu: 1
+      memory: 1G
+  sshFWD:
+    image:
+      pullPolicy: Always
+      name: ghcr.io/comp-dev-cms-ita/ssh-forwarder
+      tag: v0.0.3
+    nodePort: 31022
+    requests: 
+      cpu: 900m
+      memory: 900M
+    limits:
+      cpu: 1
+      memory: 1G
+
+# ====
 jupyterhub:
-  cull:
+  ingress:
+    # Keep default ingress disabled
     enabled: false
+    # annotations:
+    #   kubernetes.io/ingress.class: "nginx"
+    #   # comment this to use your own certs
+    #   #cert-manager.io/issuer: "selfsigned-issuer"
+    # hosts:
+    #   - {{ .Values.hostname }}
+    # tls:
+    #   - hosts:
+    #     - {{ .Values.hostname }}
+    #     secretName: jhub-tls
+    #     # use this if you put your certs on ./certs dir
+    #     #secretName: tls-secrets
+
+  scheduling:
+    userScheduler:
+      enabled: false
+    podPriority:
+      enabled: false
+    userPlaceholder:
+      enabled: false
+
+  cull:
+    enabled: true
+    timeout: 3600
+    every: 600
+
+  proxy:
+    chp:
+      networkPolicy:
+        enabled: false
+    secretToken: 72077073d819ce7a118a7dd7e2ce3eb74328cd306faa0540b1045d56113fdd0e
+    #<PUT HERE A RANDOM TOKEN openssl rand -hex 32>
+
+  singleuser:
+    networkPolicy:
+          enabled: false
+    storage:
+      dynamic:
+        storageClass: longhorn
+      extraVolumeMounts:
+        - mountPath: cvmfs
+          name: cvmfs
+        - mountPath: /opt/conda/lib/python3.9/site-packages/dask_labextension/labextension.yaml
+          name: labext
+          subPath: labextension.yaml
+        - mountPath: /opt/conda/etc/jupyter/jupyter_notebook_config.json
+          name: ruciocfg
+          subPath: jupyter_notebook_config.json
+      # extraVolumeMounts: [ { mountPath: /etc/certs, name: hostcerts } ],
+      # extraVolumes:
+      #     [
+      #       {
+      #           name: hostcerts,
+      #           secret: { defaultMode: 420, secretName: dask-tls }
+      #         }
+      #     ],
+
   hub:
+    image:
+      name: ghcr.io/dodas-ts/jhub
+      tag: 'v5.0.1-pre15'
+    cookieSecret: 72077073d819ce7a118a7dd7e2ce3eb74328cd306faa0540b1045d56113fdd0e
+    #<PUT HERE A RANDOM TOKEN openssl rand -hex 32>
+    networkPolicy:
+      enabled: false
     args:
-      - jupyterhub
-      - --config
-      - /etc/jupyterhub/jupyterhub_config.py
-      - --upgrade-db
-    cookieSecret: <cookie secret>
+    - jupyterhub
+    - --config
+    - /etc/jupyterhub/jupyterhub_config.py
+    - --upgrade-db
     db:
+      type: sqlite-pvc
+      upgrade:
       pvc:
         accessModes:
           - ReadWriteOnce
         storage: 1Gi
-        storageClassName: openebs-hostpath
-      type: sqlite-pvc
-      upgrade: null
-    extraVolumes:
-    - name: jhub-config
-      configMap:
-        name: jhub-config
-    extraVolumeMounts:
-    - name: jhub-config
-      mountPath: /usr/local/etc/jupyterhub/jupyterhub_config.d/jhub_config.py
-      subPath: jhub_config.py
+        storageClassName: longhorn
+    extraEnv:
+      OAUTH_CALLBACK_URL: https://cms-it-hub.cloud.cnaf.infn.it/hub/oauth_callback
+      OAUTH_ENDPOINT: https://dodas-iam.cloud.cnaf.infn.it/
+      OAUTH_GROUPS: /users
+      ADMIN_OAUTH_GROUPS: /admins
+      WITH_GPU: "false"
+      ACCESS_TOKEN: ""
+      SSH_NAMESPACE: default
     extraConfig:
-      myConfig.py: |
+      jhub_config.py: |
         #!/usr/bin/env python
         # -*- coding: utf-8 -*-
         import os
@@ -98,7 +203,7 @@ jupyterhub:
                 self.log.info(auth_state)
                 spawner.environment['IAM_SERVER'] = iam_server
                 spawner.environment['IAM_CLIENT_ID'] = "<iam client id>"
-                spawner.environment['IAM_CLIENT_SECRET'] = "iam client secret"
+                spawner.environment['IAM_CLIENT_SECRET'] = "<iam client secret>"
                 spawner.environment['ACCESS_TOKEN'] = auth_state['access_token']
                 spawner.environment['REFRESH_TOKEN'] = auth_state['refresh_token']
                 spawner.environment['MINIO_AUDIENCE'] = os.environ.get(
@@ -121,8 +226,6 @@ jupyterhub:
                     self.log.info(groups)
                     for gr in allowed_groups:
                         if gr in groups:
-                            amIAllowed = True
-                        else:
                             amIAllowed = True
 
                     if not amIAllowed:
@@ -224,6 +327,7 @@ jupyterhub:
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="4">4</option>
+            <option value="8">8</option>
             </select>
             <br>
             <label for="mem">Select your desired memory size:</label>
@@ -231,12 +335,27 @@ jupyterhub:
             <option value="2G">2GB</option>
             <option value="4G">4GB</option>
             <option value="8G">8GB</option>
+            <option value="16G">16GB</option>
             </select>
             <br>
 
             """
 
             def options_from_form(self, formdata):
+                mem_req_map = {
+                    "2G": "1800M",
+                    "4G": "3500M",
+                    "8G": "6800M",
+                    "16G": "14G"
+                }
+
+                cpu_req_map = {
+                    "1": "800m",
+                    "2": "1800m",
+                    "4": "3500m",
+                    "8": "6800m"
+                }
+
                 options = {}
                 options['img'] = formdata['img']
                 container_image = ''.join(formdata['img'])
@@ -245,12 +364,12 @@ jupyterhub:
 
                 options['cpu'] = formdata['cpu']
                 cpu = ''.join(formdata['cpu'])
-                self.cpu_guarantee = float(cpu)
+                self.cpu_guarantee = float(cpu_req_map[cpu])
                 self.cpu_limit = float(cpu)
 
                 options['mem'] = formdata['mem']
                 memory = ''.join(formdata['mem'])
-                self.mem_guarantee = memory
+                self.mem_guarantee = mem_req_map[memory]
                 self.mem_limit = memory
 
                 # options['gpu'] = formdata['gpu']
@@ -273,13 +392,6 @@ jupyterhub:
         }
 
         c.KubeSpawner.environment = {
-            "_condor_COLLECTOR_HOST": os.environ["HTCONDOR_COLLECTOR_URL"],
-            "_condor_SCHEDD_HOST": os.environ["HTCONDOR_SCHEDD_NAME"],
-            "_condor_SCHEDD_NAME": os.environ["HTCONDOR_SCHEDD_NAME"],
-            "_condor_AUTH_SSL_CLIENT_CAFILE": "/ca.crt",
-            "_condor_SEC_DEFAULT_AUTHENTICATION_METHODS": "SCITOKENS",
-            "_condor_SCITOKENS_FILE": "/tmp/token",
-            "_condor_TOOL_DEBUG": "D_FULLDEBUG,D_SECURITY"
         }
 
         c.KubeSpawner.extra_container_config = {
@@ -299,115 +411,5 @@ jupyterhub:
         c.KubeSpawner.notebook_dir = "/opt/workspace"
         c.FileCheckpoints.checkpoint_dir = '/tmp'
 
-    extraEnv:
-      ACCESS_TOKEN: <access token>
-      ADMIN_OAUTH_GROUPS: /cms/afprotoit/admins
-      HTCONDOR_COLLECTOR_URL: 131.154.96.124.myip.cloud.infn.it:30618
-      HTCONDOR_SCHEDD_NAME: 131.154.96.124.myip.cloud.infn.it
-      MINIO_AUDIENCE: minio-af-it
-      OAUTH_CALLBACK_URL: https://cms-it-hub.cloud.cnaf.infn.it/hub/oauth_callback
-      OAUTH_ENDPOINT: https://cms-auth.web.cern.ch/
-      OAUTH_GROUPS: /cms/afprotoit/users
-      SSH_NAMESPACE: af
-      TUNNEL_SERVICE_PORT: "31022"
-      WITH_GPU: "false"
-    image:
-      name: ghcr.io/dodas-ts/jhub
-      tag: v5.0.1-pre15
-    networkPolicy:
-      enabled: false
-  ingress:
-    enabled: false
-  proxy:
-    service:
-      type: ClusterIP
-    chp:
-      networkPolicy:
-        enabled: false
-    secretToken: <secret token>
-  scheduling:
-    podPriority:
-      enabled: false
-    userPlaceholder:
-      enabled: false
-    userScheduler:
-      enabled: false
-  prePuller:
-    hook:
-      enabled: false
-    extraImages:
-      centos7:
-        name: ghcr.io/comp-dev-cms-ita/jupyterlab
-        tag: v2.0.1-patch10-dask
-      alma8:
-        name: ghcr.io/comp-dev-cms-ita/jupyterlab
-        tag: v2.0.1-patch10-dask-alma8
-  singleuser:
-    networkPolicy:
-      enabled: false
-    storage:
-      capacity: 10Gi
-      dynamic:
-        storageClass: longhorn
-      extraVolumeMounts:
-        - mountPath: cvmfs
-          name: cvmfs
-        - mountPath: /opt/conda/lib/python3.9/site-packages/dask_labextension/labextension.yaml
-          name: labext
-          subPath: labextension.yaml
-        - mountPath: /opt/conda/etc/jupyter/jupyter_notebook_config.json
-          name: ruciocfg
-          subPath: jupyter_notebook_config.json
-      extraVolumes:
-        - hostPath:
-            path: /cvmfs-af-htcondor
-            type: Directory
-          name: cvmfs
-        - configMap:
-            name: labext
-          name: labext
-        - configMap:
-            name: ruciocfg
-          name: ruciocfg
-        - configMap:
-            name: patchjobqueue
-          name: patchjob
-      homeMountPath: /opt/workspace/persistent-storage
 spark:
   enabled: false
-sshForwarder:
-  enabled: true
-  redis:
-    image:
-      name: redis
-      pullPolicy: IfNotPresent
-      tag: 6.2.5
-    limits:
-      cpu: 1
-      memory: 1G
-    requests:
-      cpu: 900m
-      memory: 900M
-  sshFWD:
-    image:
-      name: ghcr.io/comp-dev-cms-ita/ssh-forwarder
-      pullPolicy: Always
-      tag: v0.0.3
-    limits:
-      cpu: 1
-      memory: 1G
-    nodePort: 31022
-    requests:
-      cpu: 900m
-      memory: 900M
-  sshListener:
-    image:
-      name: ghcr.io/comp-dev-cms-ita/ssh-listener
-      pullPolicy: Always
-      tag: v0.0.3
-    limits:
-      cpu: 1
-      memory: 1G
-    requests:
-      cpu: 900m
-      memory: 900M
