@@ -3,7 +3,7 @@ annotations:
 apiVersion: v1
 name: jhubaas
 version: 4.0.1
-appVersion: 2.0.1-0.dev.git.6105.hb969fa50
+appVersion: 0.11.1
 description: JHUBaaS Hub umbrella chart
 keywords:
 - jupyterhub
