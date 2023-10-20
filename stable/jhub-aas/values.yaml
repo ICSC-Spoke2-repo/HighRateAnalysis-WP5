@@ -116,14 +116,14 @@ jupyterhub:
     - --config
     - /etc/jupyterhub/jupyterhub_config.py
     - --upgrade-db
-    db:
-      type: sqlite-pvc
-      upgrade:
-      pvc:
-        accessModes:
-          - ReadWriteOnce
-        storage: 1Gi
-        storageClassName: longhorn
+    #db:
+    #  type: sqlite-pvc
+    #  upgrade:
+    #  pvc:
+    #    accessModes:
+    #      - ReadWriteOnce
+    #    storage: 1Gi
+    #    storageClassName: longhorn
     extraEnv:
       OAUTH_CALLBACK_URL: https://cms-it-hub.cloud.cnaf.infn.it/hub/oauth_callback
       OAUTH_ENDPOINT: https://dodas-iam.cloud.cnaf.infn.it/
