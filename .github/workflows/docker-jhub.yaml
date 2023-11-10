@@ -1,0 +1,38 @@
+name: docker-jhub
+
+on:
+  push:
+    tags: 
+    - "*"
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    #env:
+    #  DOCKER_TARGET_PLATFORM: linux/arm64 
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Set env
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v1 
+      with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+    - name: Get Repo Owner
+      id: get_repo_owner
+      run: echo ::set-output name=repo_owner::$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')
+    - name: Build container image
+      uses: docker/build-push-action@v2
+      with: 
+        context: ./stable/jhub-aas/docker/
+        outputs: "type=registry,push=true"
+        tags: |
+            ghcr.io/${{ steps.get_repo_owner.outputs.repo_owner }}/jhub:${{ env.RELEASE_VERSION }}
+        file: ./stable/jhub-aas/docker/Dockerfile
+        platforms: linux/amd64
