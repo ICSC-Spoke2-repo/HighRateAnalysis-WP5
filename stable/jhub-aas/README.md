@@ -10,7 +10,10 @@ This Helm chart is a customization of the one of ["Zero to Jupyter on k8s"](http
 - Cert-Manager
 - Ingress-Controller
   - everything pre-configured to run with NGINX ingress controller out-of-the-box
-- Longhorn
+- Local-path:
+  ```
+  kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.24/deploy/local-path-storage.yaml
+  ```
 
 
 ### Minimal set of values
