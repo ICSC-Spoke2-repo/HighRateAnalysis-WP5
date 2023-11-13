@@ -110,7 +110,8 @@ jupyterhub:
       #name: ghcr.io/dodas-ts/jhub
       #tag: 'v6.0.1-k8s1.21-pre7'
       name: ghcr.io/ttedeschi/jhub
-      tag: 'test-update-10'
+      #tag: 'test-update-10'
+      tag: '0.0.0'
     cookieSecret: 72077073d819ce7a118a7dd7e2ce3eb74328cd306faa0540b1045d56113fdd0e
     #<PUT HERE A RANDOM TOKEN openssl rand -hex 32>
     networkPolicy:
@@ -331,7 +332,8 @@ jupyterhub:
             <label for="stack">Select your desired image:</label>
             <input list="images" name="img">
             <datalist id="images">
-            <option value="ghcr.io/comp-dev-cms-ita/jupyterlab:v2.0.1-patch10-dask">Centos7 base image </option>
+            #<option value="ttedesch/jupyterlab:v2.0.1-patch10-update-4">Centos7 base image </option>
+            <option value="ghcr.io/ttedeschi/jupyterlab:v2.0.1-patch12-update-2-dask-alma8"> Almalinux8 base image </option>
             </datalist>
             <br>
             <label for="cpu">Select your desired number of cores:</label>
