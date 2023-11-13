@@ -327,7 +327,6 @@ jupyterhub:
             <label for="stack">Select your desired image:</label>
             <input list="images" name="img">
             <datalist id="images">
-            #<option value="ttedesch/jupyterlab:v2.0.1-patch10-update-4">Centos7 base image </option>
             <option value="ghcr.io/ttedeschi/jupyterlab:v2.0.1-patch12-update-2-dask-alma8"> Almalinux8 base image </option> #https://github.com/ttedeschi/images/blob/v2.0.1-patch12-update-2/jupyterlab/Dockerfile.dask-alma8
             </datalist>
             <br>
