@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ssh-fwd
-  namespace: test-wp5
+  namespace: jhub
   labels:
     app.kubernetes.io/name: ssh-fwd
 spec:
