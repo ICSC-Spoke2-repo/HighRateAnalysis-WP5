@@ -5,7 +5,8 @@ metadata:
   name: jhubaas
   annotations:
     meta.helm.sh/release-name: jhub
-    meta.helm.sh/release-namespace: af
+    meta.helm.sh/release-namespace: jhub
+    cert-manager.io/issuer: "jhub-self-issuer"
     #nginx.ingress.kubernetes.io/proxy-body-size: "0"
     #nginx.ingress.kubernetes.io/server-snippet: |
       #client_max_body_size 0;
@@ -27,5 +28,5 @@ spec:
   tls:
   - hosts:
     - {{ .Values.hostname }}
-    secretName: tls-secrets
+    secretName: jhub-tls
 {{- end }}

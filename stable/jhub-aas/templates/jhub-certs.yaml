@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: tls-secrets
+  name: user-tls-secrets
 type: kubernetes.io/tls
 data:
 {{ (.Files.Glob "certs/tls.crt").AsSecrets | indent 2 }}
