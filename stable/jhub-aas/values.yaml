@@ -85,23 +85,6 @@ jupyterhub:
     storage:
       dynamic:
         storageClass: local-path
-        #extraVolumeMounts:
-        #- mountPath: cvmfs
-        #  name: cvmfs
-        #- mountPath: /opt/conda/lib/python3.9/site-packages/dask_labextension/labextension.yaml
-        #  name: labext
-        #  subPath: labextension.yaml
-        #- mountPath: /opt/conda/etc/jupyter/jupyter_notebook_config.json
-        #  name: ruciocfg
-        #  subPath: jupyter_notebook_config.json
-      # extraVolumeMounts: [ { mountPath: /etc/certs, name: hostcerts } ],
-      # extraVolumes:
-      #     [
-      #       {
-      #           name: hostcerts,
-      #           secret: { defaultMode: 420, secretName: dask-tls }
-      #         }
-      #     ],
       homeMountPath: /opt/workspace/persistent-storage
 
   hub:
