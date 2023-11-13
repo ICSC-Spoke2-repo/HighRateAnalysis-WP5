@@ -1,0 +1,14 @@
+annotations:
+  category: stable
+apiVersion: v1
+name: jhubaas
+version: 0.0.1
+appVersion: 0.11.1
+description: JHUBaaS Hub umbrella chart
+keywords:
+- jupyterhub
+icon: https://jupyter.org/assets/hublogo.svg
+maintainers:
+- name: ttedesch
+  email: tommaso.tedeschi@pg.infn.it
+#please put your names here

@@ -1,0 +1,32 @@
+{{- if .Values.ingress -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jhubaas
+  annotations:
+    meta.helm.sh/release-name: jhub
+    meta.helm.sh/release-namespace: jhub
+    cert-manager.io/issuer: "jhub-self-issuer"
+    #nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    #nginx.ingress.kubernetes.io/server-snippet: |
+      #client_max_body_size 0;
+    #nginx.ingress.kubernetes.io/configuration-snippet: |
+      #chunked_transfer_encoding off;
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: proxy-public
+                port:
+                  name: http
+      host: {{ .Values.hostname }}
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - {{ .Values.hostname }}
+    secretName: jhub-tls
+{{- end }}
