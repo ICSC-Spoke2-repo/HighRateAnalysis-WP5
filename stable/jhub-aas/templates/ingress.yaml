@@ -27,5 +27,5 @@ spec:
   tls:
   - hosts:
     - {{ .Values.hostname }}
-    secretName: tls-secret
+    secretName: tls-secrets
 {{- end }}
