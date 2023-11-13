@@ -1,6 +1,5 @@
 #overide defaault ingress
-hostname: hub.192.135.24.61.myip.cloud.infn.it
-#hostname: hub.192.135.24.224.myip.cloud.infn.it
+hostname: hub.<PUBLIC-IP>.myip.cloud.infn.it
 ingress: true
 # Show options for htcondor integration
 htcondor: false
@@ -127,7 +126,7 @@ jupyterhub:
         storage: 1Gi
         storageClassName: local-path
     extraEnv:
-      OAUTH_CALLBACK_URL: https://hub.192.135.24.61.myip.cloud.infn.it/hub/oauth_callback
+      OAUTH_CALLBACK_URL: https://hub.<PUBLIC-IP>.myip.cloud.infn.it/hub/oauth_callback
       OAUTH_ENDPOINT: https://iam-demo.cloud.cnaf.infn.it/
       OAUTH_GROUPS: /users
       ADMIN_OAUTH_GROUPS: /admins
