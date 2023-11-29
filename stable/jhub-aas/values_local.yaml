@@ -1,5 +1,5 @@
 #overide defaault ingress
-hostname: hub.192.135.24.22.myip.cloud.infn.it
+hostname: localhost
 ingress: true
 # Show options for htcondor integration
 htcondor: false
@@ -83,10 +83,10 @@ jupyterhub:
     serviceAccountName: jlab
     networkPolicy:
           enabled: false
-    storage:
-      dynamic:
-        storageClass: local-path
-      homeMountPath: /opt/workspace/persistent-storage
+    #storage:
+    #  dynamic:
+    #    storageClass: local-path
+    #  homeMountPath: /opt/workspace/persistent-storage
 
   hub:
     image:
@@ -101,16 +101,16 @@ jupyterhub:
     - --config
     - /etc/jupyterhub/jupyterhub_config.py
     - --upgrade-db
-    db:
-      type: sqlite-pvc
-      upgrade:
-      pvc:
-        accessModes:
-          - ReadWriteOnce
-        storage: 1Gi
-        storageClassName: local-path
+    #db:
+      #type: sqlite-pvc
+      #upgrade:
+      #pvc:
+      #  accessModes:
+      #    - ReadWriteOnce
+      #  storage: 1Gi
+      #  storageClassName: local-path
     extraEnv:
-      OAUTH_CALLBACK_URL: https://hub.192.135.24.22.myip.cloud.infn.it/hub/oauth_callback
+      OAUTH_CALLBACK_URL: http://localhost/hub/oauth_callback
       OAUTH_ENDPOINT: https://iam-demo.cloud.cnaf.infn.it/
       OAUTH_GROUPS: /users
       ADMIN_OAUTH_GROUPS: /admins
@@ -282,7 +282,7 @@ jupyterhub:
 
 
         # c.JupyterHub.authenticator_class = GitHubEnvAuthenticator
-        c.JupyterHub.authenticator_class = EnvAuthenticator
+        c.JupyterHub.authenticator_class = "dummy"
         c.GenericOAuthenticator.oauth_callback_url = callback
 
         # PUT IN SECRET
@@ -401,6 +401,8 @@ jupyterhub:
 
         c.KubeSpawner.notebook_dir = "/opt/workspace"
         c.FileCheckpoints.checkpoint_dir = '/tmp'
+
+        c.ServerProxy.host_allowlist = lambda app, host: True
 
 spark:
   enabled: false
