@@ -21,7 +21,8 @@ COPY --from=REGISTRATION /usr/local/bin/dodas-IAMClientRec /srv/.init/dodas-IAMC
 COPY bokehjs/bokeh-3.0.0.min.js /usr/local/share/jupyterhub/static/js/bokeh.min.js
 COPY bokehjs/bokeh-widgets-3.0.0.min.js /usr/local/share/jupyterhub/static/js/bokeh-widgets.min.js
 COPY bokehjs/bokeh-tables-3.0.0.min.js /usr/local/share/jupyterhub/static/js/bokeh-tables.min.js
-COPY bokehjs/bokeh-gl-3.0.0.min.js /usr/local/share/jupyterhub/static/js/bokeh-api.min.js
+COPY bokehjs/bokeh-gl-3.0.0.min.js /usr/local/share/jupyterhub/static/js/bokeh-gl.min.js
 COPY bokehjs/bokeh-mathjax-3.0.0.min.js /usr/local/share/jupyterhub/static/js/bokeh-mathjax.min.js
+COPY bokehjs/bokeh-api-3.0.0.min.js /usr/local/share/jupyterhub/static/js/bokeh-api.min.js
 
 CMD ["/usr/bin/start.sh", "jupyterhub"]
