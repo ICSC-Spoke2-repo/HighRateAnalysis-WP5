@@ -18,6 +18,8 @@ RUN mkdir -p .init
 
 COPY --from=REGISTRATION /usr/local/bin/dodas-IAMClientRec /srv/.init/dodas-IAMClientRec
 
+RUN apt install wget
+
 WORKDIR /usr/local/share/jupyterhub/static/js
 RUN wget https://cdn.bokeh.org/bokeh/release/bokeh-3.0.0.min.js
 RUN wget https://cdn.bokeh.org/bokeh/release/bokeh-widgets-3.0.0.min.js
