@@ -91,7 +91,8 @@ jupyterhub:
   hub:
     image:
       name: ghcr.io/ttedeschi/jhub
-      tag: '0.0.0'
+      #tag: '0.0.0'
+      tag: 'dask-on-k8s-v0.0.4'
     cookieSecret: 72077073d819ce7a118a7dd7e2ce3eb74328cd306faa0540b1045d56113fdd0e
     #<PUT HERE A RANDOM TOKEN openssl rand -hex 32>
     networkPolicy:
