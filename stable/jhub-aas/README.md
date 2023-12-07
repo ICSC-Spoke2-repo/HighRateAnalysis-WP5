@@ -14,7 +14,7 @@ This Helm chart is a customization of the one of ["Zero to Jupyter on k8s"](http
   ```
 - Ingress-Controller
   ```
-  helm install ingress-nginx oci://ghcr.io/nginxinc/charts/nginx-ingress --version 1.0.2 -n ingress-nginx --kubeconfig /home/ttedeschi/.kube/config
+  helm install ingress-nginx oci://ghcr.io/nginxinc/charts/nginx-ingress --create-namespace --version 1.0.2 -n ingress-nginx
   ```
 - Local-path:
   ```
@@ -22,7 +22,7 @@ This Helm chart is a customization of the one of ["Zero to Jupyter on k8s"](http
   ```
 - Dask operator:
   ```
-  helm install --create-namespace -n dask-operator --generate-name dask/dask-kubernetes-operator
+  helm install --repo https://helm.dask.org --create-namespace -n dask-operator --generate-name dask-kubernetes-operator
   ```
 
 ### Customized values
