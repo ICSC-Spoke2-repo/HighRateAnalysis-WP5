@@ -4,44 +4,6 @@ ingress: true
 # Show options for htcondor integration
 htcondor: false
 
-sshForwarder:
-  enabled: true
-  redis:
-    image:
-      pullPolicy: IfNotPresent
-      name: redis
-      tag: 6.2.5
-    requests:
-      cpu: 900m
-      memory: 900M
-    limits:
-      cpu: 1
-      memory: 1G
-  sshListener:
-    image:
-      pullPolicy: Always
-      name: dodasts/dask-ssh-listener
-      tag: v0.1.1
-    requests:
-      cpu: 900m
-      memory: 900M
-    limits:
-      cpu: 1
-      memory: 1G
-  sshFWD:
-    image:
-      pullPolicy: Always
-      name: ghcr.io/comp-dev-cms-ita/ssh-forwarder
-      tag: v0.0.3
-    nodePort: 31023
-    requests:
-      cpu: 900m
-      memory: 900M
-    limits:
-      cpu: 1
-      memory: 1G
-
-# ====
 jupyterhub:
   ingress:
     # Keep default ingress disabled
@@ -91,7 +53,7 @@ jupyterhub:
   hub:
     image:
       name: ghcr.io/ttedeschi/jhub
-      tag: '0.0.0'
+      tag: 'dask-on-k8s-v0.0.4'
     cookieSecret: 72077073d819ce7a118a7dd7e2ce3eb74328cd306faa0540b1045d56113fdd0e
     #<PUT HERE A RANDOM TOKEN openssl rand -hex 32>
     networkPolicy:

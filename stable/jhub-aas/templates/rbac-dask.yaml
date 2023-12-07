@@ -40,4 +40,4 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: jlab  # adjust name based on the service account you created
-    namespace: jhub  # adjust name based on the service account you created
+    namespace: {{ .Release.Namespace }}  # adjust name based on the service account you created
