@@ -39,3 +39,4 @@ helm dependency build
 kubectl create namespace jhub
 helm upgrade --install --cleanup-on-fail --namespace jhub jhub ./ 
 ```
+

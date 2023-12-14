@@ -1,5 +1,5 @@
 #overide defaault ingress
-hostname: hub.192.135.24.22.myip.cloud.infn.it
+hostname: hub.192.135.24.49.myip.cloud.infn.it
 ingress: true
 # Show options for htcondor integration
 htcondor: false
@@ -50,6 +50,12 @@ jupyterhub:
         storageClass: local-path
       homeMountPath: /opt/workspace/persistent-storage
 
+  #prePuller:
+  #  extraImages:
+  #    jlab:
+  #      name: ghcr.io/ttedeschi/jlab
+  #      tag: wp5-alma8-0.0.30
+
   hub:
     image:
       name: ghcr.io/ttedeschi/jhub
@@ -72,9 +78,10 @@ jupyterhub:
         storage: 1Gi
         storageClassName: local-path
     extraEnv:
-      OAUTH_CALLBACK_URL: https://hub.192.135.24.22.myip.cloud.infn.it/hub/oauth_callback
+      OAUTH_CALLBACK_URL: https://hub.192.135.24.49.myip.cloud.infn.it/hub/oauth_callback
       OAUTH_ENDPOINT: https://iam-demo.cloud.cnaf.infn.it/
-      OAUTH_GROUPS: /users
+      #OAUTH_ENDPOINT: https://dodas-iam.cloud.cnaf.infn.it/
+      OAUTH_GROUPS: /highrate
       ADMIN_OAUTH_GROUPS: /admins
       WITH_GPU: "false"
       ACCESS_TOKEN: "dummy"
@@ -168,25 +175,29 @@ jupyterhub:
                 amIAllowed = False
 
                 import jwt
-                #groups = jwt.decode(auth_state["access_token"], options={
-                #                    "verify_signature": False, "verify_aud": False})["wlcg.groups"]
+                groups = jwt.decode(auth_state["access_token"], options={
+                                    "verify_signature": False, "verify_aud": False})["wlcg.groups"]
 
-                #if os.environ.get("OAUTH_GROUPS"):
-                #    spawner.environment['GROUPS'] = " ".join(groups)
-                #    allowed_groups = os.environ["OAUTH_GROUPS"].split(" ")
-                #    self.log.info(groups)
-                #    for gr in allowed_groups:
-                #        if gr in groups:
-                #            amIAllowed = True
+                if os.environ.get("OAUTH_GROUPS"):
+                    spawner.environment['GROUPS'] = " ".join(groups)
+                    allowed_groups = os.environ["OAUTH_GROUPS"].split(" ")
+                    pprint.pprint(groups)
+                    pprint.pprint(allowed_groups)
+                    self.log.info(groups)
+                    self.log.info(allowed_groups)
+                    for gr in allowed_groups:
+                        if gr in groups:
+                            amIAllowed = True
+                            pprint.pprint(amIAllowed)
 
-                #   if not amIAllowed:
-                #        self.log.error(
-                #            "OAuth user contains not in group the allowed groups %s" % allowed_groups
-                #        )
-                #        raise Exception(
-                #            "OAuth user not in the allowed groups %s" % allowed_groups)
+                    if not amIAllowed:
+                        self.log.error(
+                            "OAuth user contains not in group the allowed groups %s" % allowed_groups
+                        )
+                        raise Exception(
+                            "OAuth user not in the allowed groups %s" % allowed_groups)
 
-                amIAllowed = True
+                #amIAllowed = True
             async def authenticate(self, handler, data=None):
                 code = handler.get_argument("code")
                 # TODO: Configure the curl_httpclient for tornado
@@ -220,20 +231,20 @@ jupyterhub:
                 import pprint
                 pprint.pprint(auth_state)
 
-                #import jwt
-                #groups = jwt.decode(auth_state["access_token"], options={
-                #                    "verify_signature": False, "verify_aud": False})["wlcg.groups"]
+                import jwt
+                groups = jwt.decode(auth_state["access_token"], options={
+                                    "verify_signature": False, "verify_aud": False})["wlcg.groups"]
 
-                #pprint.pprint(groups)
+                pprint.pprint(groups)
 
-                #is_admin = False
-                #if os.environ.get("ADMIN_OAUTH_GROUPS") in groups:
-                #    self.log.info("%s : %s is in %s",
-                #                  (name, os.environ.get("ADMIN_OAUTH_GROUPS"), groups))
-                #    is_admin = True
-                #else:
-                #    self.log.info(" %s is not in admin group ", name)
-                is_admin = True
+                is_admin = False
+                if os.environ.get("ADMIN_OAUTH_GROUPS") in groups:
+                    self.log.info("%s : %s is in %s",
+                                  (name, os.environ.get("ADMIN_OAUTH_GROUPS"), groups))
+                    is_admin = True
+                else:
+                    self.log.info(" %s is not in admin group ", name)
+                #is_admin = True
 
                 return {
                     'name': name,
@@ -254,7 +265,7 @@ jupyterhub:
         c.GenericOAuthenticator.token_url = iam_server.strip('/') + '/token'
         c.GenericOAuthenticator.userdata_url = iam_server.strip('/') + '/userinfo'
         c.GenericOAuthenticator.scope = [
-            'openid', 'profile', 'email', 'address', 'offline_access']
+            'openid', 'profile', 'email', 'address', 'offline_access',  'wlcg', 'wlcg.groups']
         c.GenericOAuthenticator.username_key = "preferred_username"
 
         c.GenericOAuthenticator.enable_auth_state = True
@@ -272,7 +283,7 @@ jupyterhub:
             <label for="stack">Select your desired image:</label>
             <input list="images" name="img">
             <datalist id="images">
-            <option value="ghcr.io/ttedeschi/jupyterlab:v2.0.1-patch12-update-2-dask-alma8"> Almalinux8 base image </option> #https://github.com/ttedeschi/images/blob/v2.0.1-patch12-update-2/jupyterlab/Dockerfile.dask-alma8
+            <option value="ghcr.io/ttedeschi/jlab:wp5-alma8-0.0.34"> Almalinux8 base image </option> #https://github.com/ttedeschi/custom-images/blob/0.0.34/jupyterlab/Dockerfile.wp5-alma8
             </datalist>
             <br>
             <label for="cpu">Select your desired number of cores:</label>
