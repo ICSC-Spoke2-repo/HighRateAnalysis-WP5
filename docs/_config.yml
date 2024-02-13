@@ -1,7 +1,7 @@
 # Book settings
 
 title: HighRatePlatformDocumentation
-author: WP2 and WP5 Communities
+author: "ICSC - Spoke 2"
 logo: "icsc.png"
 copyright: "2024"
 
@@ -21,7 +21,7 @@ bibtex_bibfiles:
 
 # Information about where the book exists on the web
 repository:
-  url: https://github.com/frgigr/testbook
+  url: https://github.com/ICSC-Spoke2-repo/HighRateAnalysis-WP5
   branch: main
 
 # Add repository buttons to your book: remember, issues are not supported by GitLab
