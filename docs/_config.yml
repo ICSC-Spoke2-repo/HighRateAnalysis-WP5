@@ -1,0 +1,32 @@
+# Book settings
+
+title: HighRatePlatformDocumentation
+author: WP2 and WP5 Communities
+logo: "icsc.png"
+copyright: "2024"
+
+# Force re-execution of notebooks on each build
+execute:
+  execute_notebooks: force
+
+# Define the name of the latex output file for PDF builds
+latex:
+  use_jupyterbook_latex: false
+  latex_documents:
+    targetname: UserGuide.tex
+
+# Add a bibtex file so that we can create citations
+bibtex_bibfiles:
+  - references.bib
+
+# Information about where the book exists on the web
+repository:
+  url: https://github.com/frgigr/testbook
+  branch: main
+
+# Add repository buttons to your book: remember, issues are not supported by GitLab
+html:
+  announcement: "Alpha Version 0.1"
+  home_page_in_navbar: false
+  use_issues_button: true
+  use_repository_button: true
