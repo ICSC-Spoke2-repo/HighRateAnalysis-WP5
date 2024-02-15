@@ -1,0 +1,87 @@
+# Basic workflow to build and publish book
+name: Documentation
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# List of one or more jobs that can run sequentially or in parallel
+jobs:
+  # Build step
+  buildjob:
+    name: Building Documentation
+
+    # Select ubuntu: LTS versions should be preferred
+    runs-on: ubuntu-22.04
+
+    # Full sequence of tasks being executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+
+      # Setup python 3.10. Not mandatory to use this version, but it is the one available in ubuntu 22.04
+      - name: Python 3 setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      # Verify the installation is complete, with no issues
+      - name: Display python version
+        run: python -c "import sys; print(sys.version)"
+
+      # Install jupyter book package
+      - name: Install additional packages
+        run: pip install jupyter-book
+
+      # Compile the documentation
+      - name: Building documentation
+        run: jupyter-book build --path-output . docs/
+
+      # Configure pages
+      - name: Setup pages
+        id: pages
+        uses: actions/configure-pages@v3
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./_build/html
+          destination: ./_site
+
+      # Upload artifacts
+      - name: Upload artifacts after building
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: _build/html
+
+  deploy:
+    name: Deploy to Github Pages
+
+    # Assign permissions to the job
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    # Moving to ubuntu latest as everything is already built
+    runs-on: ubuntu-latest
+
+    # Setting dependency
+    needs: buildjob
+
+    # Extra (default) settings to enforce branch/deployment protection rules.
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    # Finally deploying everything
+    steps:
+      - name: Deploy artifact
+        id: deployment
+        uses: actions/deploy-pages@v3
