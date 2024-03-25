@@ -10,7 +10,6 @@ myst:
       ```
     key3: |
       ```{figure} ../img/iam.png
-      :width: 400px
       ```
     Fig. 1
     key4: |
