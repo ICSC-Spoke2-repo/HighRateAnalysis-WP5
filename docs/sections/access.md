@@ -11,7 +11,6 @@ myst:
     key3: |
       ```{figure} ../img/iam.png
       ```
-    Fig. 1
     key4: |
       ```{figure} ../img/request.png
       ```
