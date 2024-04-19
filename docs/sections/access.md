@@ -10,7 +10,9 @@ myst:
       ```
     key3: |
       ```{figure} ../img/iam.png
+      :width: 400px
       ```
+      
     key4: |
       ```{figure} ../img/request.png
       ```
@@ -116,10 +118,6 @@ Careful: Currently, each user is allocated 10 GB of persistent storage upon acco
 
 To release the resources, simply click on "File - Hub Control Panel" and then click on "Stop My Server".
 
-
-|            | 
-| ---------- | 
-| {{ key10 }} | 
 
 
 * A short video of the entire procedure is available [here](https://drive.google.com/file/d/1xe7JnEDpsPZBlCtI_krstdwg1aNZ4Xkf/view?usp=sharing)*
