@@ -48,7 +48,7 @@ myst:
 # Resource Access
 This section will be dedicated to the instructions in order to access the facility.
 
-The entrypoint is https://hub.192.135.24.49.myip.cloud.infn.it and it will redirect the user to the destination JupyterHub, deployed with [WP5 JHub Helm Chart](https://github.com/ttedeschi/HighRateAnalysis-WP5/tree/main/stable/jhub-aas).
+The entrypoint is https://hub.131.154.98.51.myip.cloud.infn.it/ and it will redirect the user to the destination JupyterHub, deployed with [WP5 JHub Helm Chart](https://github.com/ttedeschi/HighRateAnalysis-WP5/tree/main/stable/jhub-aas).
 
 Before accessing the hub itself, an authentication step is needed, relying on an IAM-DEMO account. 
 
