@@ -38,8 +38,7 @@ jupyterhub:
     chp:
       networkPolicy:
         enabled: false
-    secretToken: 72077073d819ce7a118a7dd7e2ce3eb74328cd306faa0540b1045d56113fdd0e
-    #<PUT HERE A RANDOM TOKEN openssl rand -hex 32>
+    secretToken: #<PUT HERE A RANDOM TOKEN openssl rand -hex 32>
 
   singleuser:
     serviceAccountName: jlab
@@ -60,8 +59,7 @@ jupyterhub:
     image:
       name: ghcr.io/ttedeschi/jhub
       tag: 'dask-on-k8s-v0.0.4'
-    cookieSecret: 72077073d819ce7a118a7dd7e2ce3eb74328cd306faa0540b1045d56113fdd0e
-    #<PUT HERE A RANDOM TOKEN openssl rand -hex 32>
+    cookieSecret: #<PUT HERE A RANDOM TOKEN openssl rand -hex 32>
     networkPolicy:
       enabled: false
     args:
@@ -79,10 +77,9 @@ jupyterhub:
         storageClassName: local-path
     extraEnv:
       OAUTH_CALLBACK_URL: https://hub.<PUBLIC-IP>.myip.cloud.infn.it/hub/oauth_callback
-      OAUTH_ENDPOINT: https://iam-demo.cloud.cnaf.infn.it/
-      #OAUTH_ENDPOINT: https://dodas-iam.cloud.cnaf.infn.it/
-      OAUTH_GROUPS: /highrate
-      ADMIN_OAUTH_GROUPS: /admins
+      OAUTH_ENDPOINT: https://iam-icsc.cloud.infn.it/
+      OAUTH_GROUPS: /icsc/users/spoke2analysisfacility
+      ADMIN_OAUTH_GROUPS: /icsc/admins/spoke2analysisfacility
       WITH_GPU: "false"
       ACCESS_TOKEN: "dummy"
       SSH_NAMESPACE: default
@@ -283,23 +280,23 @@ jupyterhub:
             <label for="stack">Select your desired image:</label>
             <input list="images" name="img">
             <datalist id="images">
-            <option value="ghcr.io/ttedeschi/jlab:wp5-alma8-0.0.34"> Almalinux8 base image </option> #https://github.com/ttedeschi/custom-images/blob/0.0.34/jupyterlab/Dockerfile.wp5-alma8
+            <option value="ghcr.io/icsc-spoke2-repo/jlab:wp5-alma9-highrate-v0.1.1"> Almalinux9 base image with ROOT and Coffea </option> #https://github.com/ICSC-Spoke2-repo/wp5-custom-images/blob/highrate-v0.1.1/jupyterlab/Dockerfile.wp5-alma9
             </datalist>
             <br>
             <label for="cpu">Select your desired number of cores:</label>
             <select name="cpu" size="1">
             <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="4">4</option>
-            <option value="8">8</option>
+            #<option value="2">2</option>
+            #<option value="4">4</option>
+            #<option value="8">8</option>
             </select>
             <br>
             <label for="mem">Select your desired memory size:</label>
             <select name="mem" size="1">
             <option value="2G">2GB</option>
-            <option value="4G">4GB</option>
-            <option value="8G">8GB</option>
-            <option value="16G">16GB</option>
+            #<option value="4G">4GB</option>
+            #<option value="8G">8GB</option>
+            #<option value="16G">16GB</option>
             </select>
             <br>
 
