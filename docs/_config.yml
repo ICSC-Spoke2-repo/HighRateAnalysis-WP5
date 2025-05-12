@@ -3,7 +3,7 @@
 title: HighRatePlatformDocumentation
 author: "ICSC - Spoke 2"
 logo: "icsc.png"
-copyright: "2024"
+copyright: "2025"
 
 # Force re-execution of notebooks on each build
 execute:
@@ -26,7 +26,6 @@ repository:
 
 # Add repository buttons to your book: remember, issues are not supported by GitLab
 html:
-  announcement: "Alpha Version 0.1"
   home_page_in_navbar: false
   use_issues_button: true
   use_repository_button: true
