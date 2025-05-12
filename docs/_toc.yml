@@ -6,4 +6,5 @@ chapters:
 - file: sections/infrastructure
 - file: sections/access
 - file: sections/usage
+- file: sections/custom-image
 - file: sections/troubleshooting
