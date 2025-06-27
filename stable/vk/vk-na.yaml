@@ -1,0 +1,113 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vk-na
+  labels:
+    nodeName: vk-na
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      nodeName: vk-na
+  template:
+    metadata:
+      labels:
+        nodeName: vk-na
+    spec:
+      initContainers:
+      - name: settoken
+        image: "docker.io/alpine:3"
+        command: ["sh", "-c"]
+        args: ["touch /opt/interlink/token"]
+        volumeMounts:
+        - name: token
+          mountPath: /opt/interlink
+      containers:
+      - name: jaeger
+        image: jaegertracing/all-in-one:1.51
+      - name: inttw-vk
+        image: ghcr.io/ttedeschi/virtual-kubelet-inttw:test-4
+        imagePullPolicy: Always
+        env:
+        - name: NODENAME
+          value: vk-na
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: KUBELET_PORT
+          value: "10250"
+        - name: VKTOKENFILE
+          value: "/opt/interlink/token"
+        - name: CONFIGPATH
+          value: "/etc/interlink/InterLinkConfig-037.yaml"
+        volumeMounts:
+        - name: config
+          mountPath: /etc/interlink/InterLinkConfig-037.yaml
+          subPath: InterLinkConfig-037.yaml
+        - name: config
+          mountPath: /etc/interlink/kubeconfig
+          subPath: kubeconfig
+        - name: token
+          mountPath: /opt/interlink
+        resources:
+          limits:
+            cpu: 500m
+            memory: 600Mi
+          requests:
+            cpu: 50m
+            memory: 100Mi
+      - name: interlink
+        image: ghcr.io/ttedeschi/interlink:test-4
+        imagePullPolicy: Always
+        env:
+        - name: INTERLINKCONFIGPATH
+          value: "/configs/InterLinkConfig-037.yaml"
+        - name: KUBECONFIG
+          value: "/configs/kubeconfig"
+        volumeMounts:
+        - name: config
+          mountPath: /configs/InterLinkConfig-037.yaml
+          subPath: InterLinkConfig-037.yaml
+      - name: sidecar
+        image: ghcr.io/interlink-hq/htcondor-sidecar:v0.3.7-pre7
+        command: ["/bin/sh"]
+        args: ["-c", "python3 handles.py --condor-config /utils/condor_config --schedd-host htc-xc-ce01.na.infn.it --collector-host htc-xc-ce01.na.infn.it:9619 --auth-method SCITOKENS --debug D_FULLDEBUG,D_SECURITY --proxy /utils/proxy/proxy --port 8003"]
+        env:
+        - name: BEARER_TOKEN_FILE
+          value: "/utils/proxy/proxy"
+        volumeMounts:
+        - name: proxy
+          mountPath: /utils/proxy
+        - name: cvmfs
+          mountPath: /etc/grid-security/certificates
+          subPath: grid.cern.ch/etc/grid-security/certificates
+      - name: refresh-proxy
+        image: badouralix/curl-jq
+        imagePullPolicy: Always
+        command: ["/bin/sh"]
+        args: ["-c", "while true; do curl -s -d grant_type=client_credentials -u <IAM_CLIENT_ID>:<IAM_CLIENT_SECRET> -d scope='compute.read compute.read compute.modify compute.create compute.cancel' https://iam-icsc.cloud.infn.it/token | jq -r '.access_token' > /home/proxy/proxy; sleep $((55 * 60)); done"]
+        resources:
+          limits:
+            cpu: 500m
+            memory: 600Mi
+          requests:
+            cpu: 50m
+            memory: 100Mi
+        volumeMounts:
+        - name: proxy
+          mountPath: /home/proxy
+
+      serviceAccountName: interlink
+      volumes:
+      - name: config
+        configMap:
+          name: vk-037-config-<VK-CONFIGMAP-ID>
+      - name: token
+        emptyDir: {}
+      - name: proxy
+        emptyDir: {}
+      - name: cvmfs
+        hostPath:
+          path: /cvmfs-af-htcondor
+          type: Directory
