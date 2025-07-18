@@ -1,145 +1,123 @@
 ---
 myst:
   substitutions:
-    key1: "Accounts should be requested with the motivation: **spoke2 tests**.
-    <br>
-    Once approved, another request is needed, in order to be added to the `highrate` group. Please, use the '*Join a group*' button in the '*Group request tab*', adding the same motivation as before, when requested."
-    key2: |
-      ```{important}
-      {{ key1 }}
-      ```
-    key3: |
+    key1: |
       ```{figure} ../img/iam.png
       :width: 400px
+      :name: IAM
       ```
-      
+
+    key2: |
+      ```{figure} ../img/IAM_registration.png
+      :name: registration
+      `````  
+
+    key3: |
+      ```{figure} ../img/request_plus.png
+      :name: group
+      ``` 
+
     key4: |
-      ```{figure} ../img/request.png
-      ```
+      ```{figure} ../img/server_options.png
+      :name: server_options
+      ``` 
 
     key5: |
-      ```{figure} ../img/IAM_registration.png
-      ```
-    
-    key6: |
       ```{figure} ../img/jupyter_demo.png
-      ```  
-
-    key7: |
-      ```{figure} ../img/request_plus.png
-      ``` 
-
-    key8: |
-      ```{figure} ../img/server_options.png
-      ``` 
-
-    key9: |
-      ```{figure} ../img/signIN.png
-      ``` 
-
-    key10: |
-      ```{figure} ../img/stop_server.png
-      ``` 
-
-
-
+      :name: jlab
+      ```
 ---
 
-# Resource Access
-This section will be dedicated to the instructions in order to access the facility.
+# Access instructions
+This section is dedicated to the instructions to follow in order to access the facility.
 
-The entrypoint is https://hub.131.154.98.51.myip.cloud.infn.it/ and it will redirect the user to the destination JupyterHub, deployed with [WP5 JHub Helm Chart](https://github.com/ttedeschi/HighRateAnalysis-WP5/tree/main/stable/jhub-aas).
+The entrypoint is https://hub.131.154.98.51.myip.cloud.infn.it/ and it will redirect the user to the JupyterHub service, deployed with the [WP5 JHub Helm Chart](https://github.com/ttedeschi/HighRateAnalysis-WP5/tree/main/stable/jhub-aas).
 
-Before accessing the hub itself, an authentication step is needed, relying on an IAM-DEMO account. 
-
-## Account Requests
-If the user doesn't already have an account, please use the same authentication page available at the following link: https://iam-demo.cloud.cnaf.infn.it/
-
-|            |              |
-| ---------- | ------------ |
-| {{ key3 }} | {{ key9}}    |
+Before accessing the hub itself, an **authentication step** is needed, relying on the IAM-ICSC service. 
 
 
-By clicking on "Sign in with OAuth 2.0", you will be redirected to the login [page](https://iam-demo.cloud.cnaf.infn.it/)
+## Requesting an account on IAM-ICSC
+If you don't have an account, go to this page: https://iam-icsc.cloud.infn.it
 
-For first time access:
-1. Apply for a new account by clicking on the green "Apply for an account" button (see fig.1);
-1. The page will redirect you to a form to be filled in (fig.2). You can use "spoke2 tests" as motivation;
-1. Click on "Register" and wait for the confirmation email to the address indicated in the form and click on the URL in the email to confirm;
-1. After the first confirmation, the account activation process will start. At the end of this process, you'll receive a second email to confirm the username and to set the password;
-1. When you access the new page, you will have to join the "highrate" group.
+1. Apply for a new account by clicking on the green "Apply for an account" button (see [Figure bottom-left](IAM));
+1. Login with your INFN-AAI credentials.
+1. The page will then redirect you to a form to be filled in (see [Figure bottom-right](registration)). You can use "Spoke 2 - Quasi interactive analysis of big data with high-throughput"  as motivation;
+1. Click on "Register" and wait for an admin approval;
+1. After this approval, you'll receive an email to confirm the username and to set the password;
+1. Your IAM account is now active. 
+
+|            |            |
+| ---------- | ---------- |
+| {{ key1 }} | {{ key2 }} |
+
+You can now login back to the IAM page and request access to the `spoke2analysisfacility` group, which will grant you access to the High Rate platform.
+To do so (see [Figure below](group)), click on "Join a group" (under "Group request") and select: `icsc/users/spoke2analysisfacility`. 
+You can use as motivation the same as before: "Spoke 2 - Quasi interactive analysis of big data with high-throughput".
+
+|            | 
+| ---------- | 
+| {{ key3 }} | 
+
+Once your request is approved, you will be able to access the platform.
+
+## Accessing the platform
+
+1. Go to the entrypoint URL: https://hub.192.135.24.49.myip.cloud.infn.it;
+
+:::{warning}
+The page uses https, but for the moment no CA certificate is used. On your browser, you could receive the message "Connection not secure". Click on "Accept the risk and continue" (or similar) to enter the homepage.
+:::
+
+1. Click on `Sign in with OAuth2.0`;
+1. Log in using the IAM-ICSC credentials created in the section above;
+
+You will now see the Jupyter server possible configurations (see [Figure below](server_options)).
+
+Specifically, you can choose from the dropdown menu:
+- The JupyterLab image to use (see [Image configuration](configuration) section below);
+- The required number of cores for the lab session:
+   - 1, 2, 4 o 8
+- The required memory capacity for the lab session:
+   - 2, 4, 8, 16
+
+|            | 
+| ---------- | 
+| {{ key4 }} | 
 
 
-Your account is now ready to use.
+Wait for the server startup (the first time it can take several minutes), which will automatically start the final JupyterLab session (see [Figure below](jlab)).
 
 |            | 
 | ---------- | 
 | {{ key5 }} | 
 
 
-Once the account creation process is complete, you will receive an email containing a confirmation URL within a few moments.
-Upon clicking the URL, you will need to wait for the account activation by the admins. You will receive further communication via email (this may take longer than the initial email), confirming your username and providing a URL for setting the password.
-Upon accessing the new page, you will need to join the "highrate" group.
+:::{danger}
+Currently, each user is allocated 10 GB of persistent storage upon account creation. All files must be saved within the "persistent-storage" directory, otherwise they will be lost each time you exit and enter the platform.
+:::
 
+### Logout procedure
 
-|            | 
-| ---------- | 
-| {{ key7 }} | 
+To release the resources and correctly logout, simply click on "File -> Hub Control Panel" and then click on "Stop My Server".
 
-
-
-
-Once joined to the group (which should be visible in the "Groups" section), through the URL provided, https://hub.192.135.24.49.myip.cloud.infn.it
-you will gain access to the resources of the INFN cloud. Specifically, you can choose from the dropdown menu:
-- The Operating System image to be used
-   - Alma8-0.0.34 + python3.11 + Dask
-   - Alma8-0.0.40 + python3.11 + Dask + ROOT 6.30
-- The required number of cores
-   - 1, 2, 4 o 8
-- The required memory capacity
-   - 2, 4, 8, 16
-
-
-
-|            | 
-| ---------- | 
-| {{ key8 }} | 
-
-
-Wait for the server startup and access JupyterHub.
-
-
-|            | 
-| ---------- | 
-| {{ key6 }} | 
-
-
-Careful: Currently, each user is allocated 10 GB of persistent storage upon account creation. All files must be saved within the "persistent-storage" directory, otherwise they will be lost upon resource release
-
-To release the resources, simply click on "File - Hub Control Panel" and then click on "Stop My Server".
-
-
-
-* A short video of the entire procedure is available [here](https://drive.google.com/file/d/1xe7JnEDpsPZBlCtI_krstdwg1aNZ4Xkf/view?usp=sharing)*
-
-## Configuration
-Once logged-in, the user has to choose an image to be loaded on the cluster. Choosing a custom image is an option, however some ready-to-use images are available:
+(configuration)=
+## Image configuration 
+Once logged-in, the user has to choose an image to be loaded on the platform (JupyterLab and Dask cluster). Choosing a custom image is an option (see [Create a custom image](./custom-image.md)), however some ready-to-use images are available:
 ```{list-table}
 :header-rows: 1
 * - *Image*
   - *System*
   - *Included Package(s)*
   - *Default*
-* - [ghcr.io/ttedeschi/jlab:wp5-alma8-0.0.34](https://github.com/ttedeschi/custom-images/blob/0.0.34/jupyterlab/Dockerfile.wp5-alma8)
-  - AlmaLinux8
-  - Python 3.11 + Dask
+  - *Offloading*
+* - [ghcr.io/icsc-spoke2-repo/jlab:wp5-alma9-highrate-v0.1.4](https://github.com/ICSC-Spoke2-repo/wp5-custom-images/blob/highrate/jupyterlab/Dockerfile.wp5-alma9)
+  - AlmaLinux9
+  - Python 3.11 + Dask + ROOT 6.32.02
   - Yes
-* - [ghcr.io/ttedeschi/jlab:wp5-alma8-0.0.40](https://github.com/ttedeschi/custom-images/blob/0.0.40/jupyterlab/Dockerfile.wp5-alma8)
-  - AlmaLinux8
-  - Python 3.11 + Dask + ROOT 6.30
-  - No
+  - No (all inside the k8s cluster)
+* - [ghcr.io/icsc-spoke2-repo/jlab:wp5-alma9-highrate-offload-v0.0.2-cvmfs-infn](https://github.com/ICSC-Spoke2-repo/wp5-custom-images/blob/highrate-offloading/jupyterlab/Dockerfile.wp5-alma9)
+  - AlmaLinux9
+  - Python 3.11 + Dask + ROOT 6.32.02
+  - Yes
+  - Yes (offloading to HTCondor nodes)
 ```
-
-:::{note}
-In both cases, a Dask cluster can be spawned on Kubernetes nodes thanks to the *Dask LabExtension*. When using [ghcr.io/ttedeschi/jlab:wp5-alma8-0.0.40](https://github.com/ttedeschi/custom-images/blob/0.0.40/jupyterlab/Dockerfile.wp5-alma8) image, Dask workers are all deployed with the same ROOT version.
-:::

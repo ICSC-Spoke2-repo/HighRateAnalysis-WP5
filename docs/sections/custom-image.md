@@ -9,14 +9,20 @@ Here you will learn how to leverage your own image (libraries, code etc) to exec
   :::{warning}
   The only requirement is that the image has to be derived from 
   ```bash 
-  ghcr.io/icsc-spoke2-repo/jlab:wp5-alma9-highrate-v0.1.1
+  ghcr.io/icsc-spoke2-repo/jlab:wp5-alma9-highrate-v0.1.4
   ```
+  (if you want to use the k8s cluster for Dask)
+  or
+  ```bash
+  ghcr.io/icsc-spoke2-repo/jlab:wp5-alma9-highrate-offload-v0.0.2-cvmfs-infn
+  ```
+  (if you want to offload the Dask cluster on the external resources)
   :::
 
   As an example:
 
   ```dockerfile
-  FROM ghcr.io/icsc-spoke2-repo/jlab:wp5-alma9-highrate-v0.1.1
+  FROM ghcr.io/icsc-spoke2-repo/jlab:wp5-alma9-highrate-v0.1.4
   
   RUN yum install -y texlive dvipng ripgrep && dnf install -y texlive-type1cm
   ```

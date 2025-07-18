@@ -1,6 +1,17 @@
 # Infrastructure Details
-The resources currently available and exploitable (k8s cluster) are listed below:
-- master node with 8 CPUs, 16 MB RAM, 30 GB disk
-- 9 worker nodes with 16 CPUs, 33 MB RAM, 155 GB disk
+The infrastructure consists of a k8s cluster made of:
+- A Master node with 16 CPUs, 32 GB RAM, 80 GB disk;
+- 7 worker nodes with 16 CPUs, 32 GB RAM, 80 GB disk.
 
-Additional details and computing integration(s) will be added in the future, if available
+On such cluster, a JupyterHub is deployed where the users can deploy a JupyterLab session to get access to a full IDE (persistent storage, terminal, notebooks, editors, ...).
+
+[**July 2025**] Users can now scale up their computation, using Dask, by offloading to external resources:
+
+- **Currently**: 5 dedicated nodes (each one with 96 cores);
+- *More nodes will be added in the next weeks...*
+
+These nodes are accessible via HTCondor-CE and the connection is totally transparent for the user (using the [InterLink](https://www.intertwin.eu/article/infrastructure-component-interlink) service).
+
+Below a simplified diagram of the High Rate platform:
+
+![image](../img/infrastructure.png)
