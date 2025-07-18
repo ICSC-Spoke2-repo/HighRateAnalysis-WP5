@@ -16,7 +16,7 @@ Here you will learn how to leverage your own image (libraries, code etc) to exec
   ```bash
   ghcr.io/icsc-spoke2-repo/jlab:wp5-alma9-highrate-offload-v0.0.2-cvmfs-infn
   ```
-  (if you want to offload the Dask cluster)
+  (if you want to offload the Dask cluster on the external resources)
   :::
 
   As an example:

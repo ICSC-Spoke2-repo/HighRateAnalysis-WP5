@@ -8,5 +8,7 @@ The content of this guide reflects the efforts of many people: many thanks to ev
 ```{bibliography} ../references.bib
 :style: unsrt
 ```
+<br>
+<br>
 
 *Last update: 18th July 2025*
