@@ -1,0 +1,16 @@
+InterlinkPort: "30004"
+SidecarPort: "8003"
+CommandPrefix: ""
+ExportPodData: true
+DataRootFolder: ".knoc/"
+VKTokenFile: "/opt/interlink/token"
+InterlinkAddress: "http://localhost"
+InterlinkURL: "http://localhost"
+SidecarURL: "http://localhost"
+ServiceAccount: "interlink"
+BashPath: /bin/bash
+VerboseLogging: true
+ErrorsOnlyLogging: false
+CPU: 1000
+Memory: 16000Gi
+Pod: 1000

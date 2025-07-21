@@ -48,6 +48,14 @@ jupyterhub:
       dynamic:
         storageClass: local-path
       homeMountPath: /opt/workspace/persistent-storage
+      extraVolumeMounts:
+        - mountPath: cvmfs
+          name: cvmfs
+      extraVolumes:
+        - hostPath:
+            path: /cvmfs-af-htcondor
+            type: Directory
+          name: cvmfs
 
   #prePuller:
   #  extraImages:
@@ -83,6 +91,7 @@ jupyterhub:
       WITH_GPU: "false"
       ACCESS_TOKEN: "dummy"
       SSH_NAMESPACE: default
+      TUNNEL_SERVICE_PORT: "31022"
     extraConfig:
       jhub_config.py: |
         #!/usr/bin/env python
@@ -280,7 +289,8 @@ jupyterhub:
             <label for="stack">Select your desired image:</label>
             <input list="images" name="img">
             <datalist id="images">
-            <option value="ghcr.io/icsc-spoke2-repo/jlab:wp5-alma9-highrate-v0.1.1"> Almalinux9 base image with ROOT and Coffea </option> #https://github.com/ICSC-Spoke2-repo/wp5-custom-images/blob/highrate-v0.1.1/jupyterlab/Dockerfile.wp5-alma9
+            <option value="ghcr.io/icsc-spoke2-repo/jlab:wp5-alma9-highrate-v0.1.4"> Almalinux9 base image with ROOT and Coffea </option> #https://github.com/ICSC-Spoke2-repo/wp5-custom-images/blob/highrate-v0.1.4/jupyterlab/Dockerfile.wp5-alma9
+            <option value="ghcr.io/icsc-spoke2-repo/jlab:wp5-alma9-highrate-offload-v0.0.2-cvmfs-infn"> Offload experimental image </option> #https://github.com/ICSC-Spoke2-repo/wp5-custom-images/blob/highrate-offload-v0.0.2-cvmfs-infn/jupyterlab/Dockerfile.wp5-alma9
             </datalist>
             <br>
             <label for="cpu">Select your desired number of cores:</label>
