@@ -19,13 +19,24 @@ Here you will learn how to leverage your own image (libraries, code etc) to exec
   (if you want to offload the Dask cluster on the external resources)
   :::
 
+  In both cases, you must also make sure to modify accordingly /opt/conda/lib/python3.11/site-packages/dask_labextension/refresh-manifest.py (lines [18-19](https://github.com/ICSC-Spoke2-repo/wp5-custom-images/blob/highrate-v0.1.4/jupyterlab/refresh-manifest.py#L18L19) in the first case or lines [33-34](https://github.com/ICSC-Spoke2-repo/wp5-custom-images/blob/highrate-offload-v0.0.2-cvmfs-infn/jupyterlab/refresh-manifest.py#L33L34) in the second case) so that:
+
+```python
+    manifest["spec"]["scheduler"]["spec"]["containers"][0]["image"] = <YOUR IMAGE>
+    manifest["spec"]["worker"]["spec"]["containers"][0]["image"] = <YOUR IMAGE>
+```
+  In particular, for the second case, uploading your image to one of the cvmfs-distributed "unpacked" repositories (i.e. `unpacked.infn.it` or `unpacked.cern.ch`) could make the deployment of your Dask clusters on external resources much faster.
+
   As an example:
 
   ```dockerfile
   FROM ghcr.io/icsc-spoke2-repo/jlab:wp5-alma9-highrate-v0.1.4
   
   RUN yum install -y texlive dvipng ripgrep && dnf install -y texlive-type1cm
+  COPY my-custom-refresh-manifest.py /opt/conda/lib/python3.11/site-packages/dask_labextension/refresh-manifest.py
   ```
+
+  In addition, make sure to modify accordingly /opt/conda/lib/python3.11/site-packages/dask_labextension/refresh-manifest.py  https://github.com/ICSC-Spoke2-repo/wp5-custom-images/blob/highrate-offloading/jupyterlab/refresh-manifest.py#L33L34 
 
 - To make the image visible on the high-rate platform, there are several options available:
   - Publish the image on a container registry (dockerhub, quay, ...);
