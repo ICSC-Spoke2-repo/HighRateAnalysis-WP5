@@ -62,7 +62,7 @@ Once your request is approved, you will be able to access the platform.
 
 ## Accessing the platform
 
-1. Go to the entrypoint URL: https://hub.192.135.24.49.myip.cloud.infn.it;
+1. Go to the entrypoint URL: https://hub.131.154.98.51.myip.cloud.infn.it;
 
 :::{warning}
 The page uses https, but for the moment no CA certificate is used. On your browser, you could receive the message "Connection not secure". Click on "Accept the risk and continue" (or similar) to enter the homepage.
