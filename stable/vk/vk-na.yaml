@@ -70,7 +70,7 @@ spec:
           mountPath: /configs/InterLinkConfig-037.yaml
           subPath: InterLinkConfig-037.yaml
       - name: sidecar
-        image: ghcr.io/interlink-hq/htcondor-sidecar:v0.3.7-pre7
+        image: ghcr.io/ttedeschi/htcondor-sidecar:v0.3.7-pre7-el9
         command: ["/bin/sh"]
         args: ["-c", "python3 handles.py --condor-config /utils/condor_config --schedd-host htc-xc-ce01.na.infn.it --collector-host htc-xc-ce01.na.infn.it:9619 --auth-method SCITOKENS --debug D_FULLDEBUG,D_SECURITY --proxy /utils/proxy/proxy --port 8003"]
         env:
