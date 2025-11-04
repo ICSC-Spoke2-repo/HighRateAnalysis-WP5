@@ -8,6 +8,8 @@ RUN pip3 install pyjwt
 
 RUN pip3 install kubernetes
 
+RUN apt-get update && apt-get -y install vim sudo git curl ca-certificates
+
 RUN curl -k  https://raw.githubusercontent.com/DODAS-TS/dodas-apps/master/logo.png -o /etc/logo.png
 
 RUN echo "jovyan ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
