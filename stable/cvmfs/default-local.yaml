@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  sft.cern.ch.conf: |
+    CVMFS_QUOTA_LIMIT=4000
+  unpacked.cern.ch.conf: |
+    CVMFS_QUOTA_LIMIT=4000
+kind: ConfigMap
+metadata:
+  name: default-local
+  namespace: jhub

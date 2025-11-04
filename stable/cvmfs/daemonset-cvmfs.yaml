@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    app.kubernetes.io/name: cvmfs-pod
+  name: cvmfs
+  namespace: jhub
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cvmfs
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: cvmfs
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                - cvmfs
+            topologyKey: kubernetes.io/hostname
+      containers:
+      - env:
+        - name: REPO_LIST
+          value: cms.cern.ch  grid.cern.ch unpacked.cern.ch sft.cern.ch unpacked.infn.it
+        image: dodasts/cvmfs:v1.4-reloaded
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          exec:
+            command:
+            - bash
+            - -c
+            - ls /cvmfs/*
+          failureThreshold: 3
+          initialDelaySeconds: 30
+          periodSeconds: 600
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: cvmfs
+        resources: {}
+        securityContext:
+          capabilities:
+            add:
+            - SYS_ADMIN
+          privileged: true
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /cvmfs
+          mountPropagation: Bidirectional
+          name: cvmfs
+        - mountPath: /etc/cvmfs/config.d
+          name: configd
+      dnsConfig:
+        nameservers:
+        - 8.8.8.8
+      dnsPolicy: None
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - hostPath:
+          path: /cvmfs-af-htcondor
+          type: DirectoryOrCreate
+        name: cvmfs
+      - configMap:
+          defaultMode: 420
+          name: default-local
+        name: configd
+  updateStrategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+    type: RollingUpdate
