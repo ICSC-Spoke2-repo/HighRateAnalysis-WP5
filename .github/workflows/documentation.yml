@@ -38,7 +38,7 @@ jobs:
 
       # Install jupyter book package
       - name: Install additional packages
-        run: pip install jupyter-book
+        run: pip install jupyter-book==1.0.4
 
       # Compile the documentation
       - name: Building documentation
