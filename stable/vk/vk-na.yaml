@@ -26,7 +26,7 @@ spec:
       - name: jaeger
         image: jaegertracing/all-in-one:1.51
       - name: inttw-vk
-        image: ghcr.io/ttedeschi/virtual-kubelet-inttw:test-4
+        image: ghcr.io/ttedeschi/interlink/virtual-kubelet-inttw:0.4.0-pre2-spoke2-v2 #https://github.com/ttedeschi/interLink/blob/0.4.0-pre2-spoke2-v2/docker/Dockerfile.vk
         imagePullPolicy: Always
         env:
         - name: NODENAME
@@ -40,11 +40,11 @@ spec:
         - name: VKTOKENFILE
           value: "/opt/interlink/token"
         - name: CONFIGPATH
-          value: "/etc/interlink/InterLinkConfig-037.yaml"
+          value: "/etc/interlink/InterLinkConfig.yaml"
         volumeMounts:
         - name: config
-          mountPath: /etc/interlink/InterLinkConfig-037.yaml
-          subPath: InterLinkConfig-037.yaml
+          mountPath: /etc/interlink/InterLinkConfig.yaml
+          subPath: InterLinkConfig.yaml
         - name: config
           mountPath: /etc/interlink/kubeconfig
           subPath: kubeconfig
@@ -58,19 +58,19 @@ spec:
             cpu: 50m
             memory: 100Mi
       - name: interlink
-        image: ghcr.io/ttedeschi/interlink:test-4
+        image: ghcr.io/ttedeschi/interlink/interlink:0.4.0-pre2-spoke2-v2 #https://github.com/ttedeschi/interLink/blob/0.4.0-pre2-spoke2-v2/docker/Dockerfile.interlink
         imagePullPolicy: Always
         env:
         - name: INTERLINKCONFIGPATH
-          value: "/configs/InterLinkConfig-037.yaml"
+          value: "/configs/InterLinkConfig.yaml"
         - name: KUBECONFIG
           value: "/configs/kubeconfig"
         volumeMounts:
         - name: config
-          mountPath: /configs/InterLinkConfig-037.yaml
-          subPath: InterLinkConfig-037.yaml
+          mountPath: /configs/InterLinkConfig.yaml
+          subPath: InterLinkConfig.yaml
       - name: sidecar
-        image: ghcr.io/ttedeschi/htcondor-sidecar:v0.3.7-pre7-el9
+        image: ghcr.io/ttedeschi/htcondor-sidecar:v0.3.7-pre7-el9 #https://github.com/ttedeschi/interlink-htcondor-plugin/blob/v0.3.7-pre7-el9/docker/Dockerfile
         command: ["/bin/sh"]
         args: ["-c", "python3 handles.py --condor-config /utils/condor_config --schedd-host htc-xc-ce01.na.infn.it --collector-host htc-xc-ce01.na.infn.it:9619 --auth-method SCITOKENS --debug D_FULLDEBUG,D_SECURITY --proxy /utils/proxy/proxy --port 8003"]
         env:
@@ -102,7 +102,7 @@ spec:
       volumes:
       - name: config
         configMap:
-          name: vk-037-config-<VK-CONFIGMAP-ID>
+          name: vk-config-<VK-CONFIGMAP-ID>
       - name: token
         emptyDir: {}
       - name: proxy

@@ -66,7 +66,7 @@ jupyterhub:
   hub:
     image:
       name: ghcr.io/ttedeschi/jhub
-      tag: 'v0.0.1'
+      tag: 'v0.0.1' #https://github.com/ttedeschi/HighRateAnalysis-WP5/blob/v0.0.1/stable/jhub-aas/docker/Dockerfile
     cookieSecret: #<PUT HERE A RANDOM TOKEN openssl rand -hex 32>
     networkPolicy:
       enabled: false
@@ -290,7 +290,7 @@ jupyterhub:
             <input list="images" name="img">
             <datalist id="images">
             <option value="ghcr.io/icsc-spoke2-repo/jlab:wp5-alma9-highrate-v0.1.4"> Almalinux9 base image with ROOT and Coffea </option> #https://github.com/ICSC-Spoke2-repo/wp5-custom-images/blob/highrate-v0.1.4/jupyterlab/Dockerfile.wp5-alma9
-            <option value="ghcr.io/icsc-spoke2-repo/jlab:wp5-alma9-highrate-offload-v0.0.2-cvmfs-infn"> Offload experimental image </option> #https://github.com/ICSC-Spoke2-repo/wp5-custom-images/blob/highrate-offload-v0.0.2-cvmfs-infn/jupyterlab/Dockerfile.wp5-alma9
+            <option value="ghcr.io/icsc-spoke2-repo/jlab:wp5-alma9-highrate-offload-v0.0.3-cvmfs-infn"> Offload experimental image </option> #https://github.com/ICSC-Spoke2-repo/wp5-custom-images/blob/highrate-offload-v0.0.3-cvmfs-infn/jupyterlab/Dockerfile.wp5-alma9
             </datalist>
             <br>
             <label for="cpu">Select your desired number of cores:</label>
