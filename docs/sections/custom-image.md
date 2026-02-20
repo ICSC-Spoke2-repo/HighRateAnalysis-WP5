@@ -14,12 +14,12 @@ Here you will learn how to leverage your own image (libraries, code etc) to exec
   (if you want to use the k8s cluster for Dask)
   or
   ```bash
-  ghcr.io/icsc-spoke2-repo/jlab:wp5-alma9-highrate-offload-v0.0.2-cvmfs-infn
+  ghcr.io/icsc-spoke2-repo/jlab:wp5-alma9-highrate-offload-v0.0.3-cvmfs-infn
   ```
   (if you want to offload the Dask cluster on the external resources)
   :::
 
-  In both cases, you must also make sure to modify accordingly `/opt/conda/lib/python3.11/site-packages/dask_labextension/refresh-manifest.py` (lines [18-19](https://github.com/ICSC-Spoke2-repo/wp5-custom-images/blob/highrate-v0.1.4/jupyterlab/refresh-manifest.py#L18L19) in the first case or lines [33-34](https://github.com/ICSC-Spoke2-repo/wp5-custom-images/blob/highrate-offload-v0.0.2-cvmfs-infn/jupyterlab/refresh-manifest.py#L33L34) in the second case) so that:
+  In both cases, you must also make sure to modify accordingly `/opt/conda/lib/python3.11/site-packages/dask_labextension/refresh-manifest.py` (lines [18-19](https://github.com/ICSC-Spoke2-repo/wp5-custom-images/blob/highrate-v0.1.4/jupyterlab/refresh-manifest.py#L18L19) in the first case or lines [33-34](https://github.com/ICSC-Spoke2-repo/wp5-custom-images/blob/highrate-offload-v0.0.3-cvmfs-infn/jupyterlab/refresh-manifest.py#L33L34) in the second case) so that:
 
   ```python
   manifest["spec"]["scheduler"]["spec"]["containers"][0]["image"] = <YOUR IMAGE>

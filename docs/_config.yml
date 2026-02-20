@@ -3,7 +3,7 @@
 title: HighRatePlatformDocumentation
 author: "ICSC - Spoke 2"
 logo: "icsc.png"
-copyright: "2025"
+copyright: "2026"
 
 # Force re-execution of notebooks on each build
 execute:
