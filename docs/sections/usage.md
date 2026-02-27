@@ -6,4 +6,5 @@ Some examples are available at the following links:
 - CMS flavour physics ($\tau\rightarrow 3\mu$ analysis): [link to presentation](https://agenda.infn.it/event/44199/contributions/251831/attachments/130096/193373/AF_workshop_flavor.pdf)
 - CI/CD with mkShapesRDF: [link to presentation](https://agenda.infn.it/event/44199/contributions/251832/attachments/130117/193400/CI_CD%20on%20analysis%20facility.pdf)
 - Future Colliders, FCCee: https://github.com/adonofri/INFN_na_interactive_analysis
+- Histogram builder for SUSY analysis: https://github.com/frgigr/icsc-wp2-susy-histo-builder
 - PocketCoffea demonstrator with the high rate platform: https://github.com/ttedeschi/workshop2025_demo/tree/main/PocketCoffea
