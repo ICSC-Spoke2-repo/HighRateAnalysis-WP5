@@ -11,4 +11,4 @@ The content of this guide reflects the efforts of many people: many thanks to ev
 <br>
 <br>
 
-*Last update: 18th July 2025*
+*Last update: 20th February 2026*

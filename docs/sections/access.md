@@ -41,7 +41,7 @@ If you don't have an account, go to this page: https://iam-icsc.cloud.infn.it
 
 1. Apply for a new account by clicking on the green "Apply for an account" button (see [Figure bottom-left](IAM));
 1. Login with your INFN-AAI credentials.
-1. The page will then redirect you to a form to be filled in (see [Figure bottom-right](registration)). You can use "Spoke 2 - Quasi interactive analysis of big data with high-throughput"  as motivation;
+1. The page will then redirect you to a form to be filled in (see [Figure bottom-right](registration)). You are asked to enter a motivation, briefly describing the reason for the access request;
 1. Click on "Register" and wait for an admin approval;
 1. After this approval, you'll receive an email to confirm the username and to set the password;
 1. Your IAM account is now active. 
@@ -52,7 +52,7 @@ If you don't have an account, go to this page: https://iam-icsc.cloud.infn.it
 
 You can now login back to the IAM page and request access to the `spoke2analysisfacility` group, which will grant you access to the High Rate platform.
 To do so (see [Figure below](group)), click on "Join a group" (under "Group request") and select: `icsc/users/spoke2analysisfacility`. 
-You can use as motivation the same as before: "Spoke 2 - Quasi interactive analysis of big data with high-throughput".
+You can use as motivation the same as before.
 
 |            | 
 | ---------- | 
@@ -75,9 +75,9 @@ You will now see the Jupyter server possible configurations (see [Figure below](
 
 Specifically, you can choose from the dropdown menu:
 - The JupyterLab image to use (see [Image configuration](configuration) section below);
-- The required number of cores for the lab session:
+- The required number of cores for the lab session. The following options are available:
    - 1, 2, 4 o 8
-- The required memory capacity for the lab session:
+- The required memory capacity for the lab session. The following options are available:
    - 2, 4, 8, 16
 
 |            | 
@@ -108,16 +108,13 @@ Once logged-in, the user has to choose an image to be loaded on the platform (Ju
 * - *Image*
   - *System*
   - *Included Package(s)*
-  - *Default*
   - *Offloading*
 * - [ghcr.io/icsc-spoke2-repo/jlab:wp5-alma9-highrate-v0.1.4](https://github.com/ICSC-Spoke2-repo/wp5-custom-images/blob/highrate/jupyterlab/Dockerfile.wp5-alma9)
   - AlmaLinux9
   - Python 3.11 + Dask + ROOT 6.32.02
-  - Yes
   - No (all inside the k8s cluster)
-* - [ghcr.io/icsc-spoke2-repo/jlab:wp5-alma9-highrate-offload-v0.0.2-cvmfs-infn](https://github.com/ICSC-Spoke2-repo/wp5-custom-images/blob/highrate-offloading/jupyterlab/Dockerfile.wp5-alma9)
+* - [ghcr.io/icsc-spoke2-repo/jlab:wp5-alma9-highrate-offload-v0.0.3-cvmfs-infn](https://github.com/ICSC-Spoke2-repo/wp5-custom-images/blob/highrate-offloading/jupyterlab/Dockerfile.wp5-alma9)
   - AlmaLinux9
   - Python 3.11 + Dask + ROOT 6.32.02
-  - Yes
   - Yes (offloading to HTCondor nodes)
 ```
