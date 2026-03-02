@@ -8,3 +8,6 @@ Some examples are available at the following links:
 - Future Colliders, FCCee: https://github.com/adonofri/INFN_na_interactive_analysis
 - Histogram builder for SUSY analysis: https://github.com/frgigr/icsc-wp2-susy-histo-builder
 - PocketCoffea demonstrator with the high rate platform: https://github.com/ttedeschi/workshop2025_demo/tree/main/PocketCoffea
+
+The high rate platform has also been used in the context of a PhD course at the University of Bologna, with the following material available:
+- Course material: https://github.com/tommasodiotalevi/AI4HEP
