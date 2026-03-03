@@ -7,7 +7,7 @@ General documentation is hosted at https://icsc-spoke2-repo.github.io/HighRateAn
 ### Quick start
 To deploy a Kubernetes cluster using INFN Cloud resources, please refer to the official guide (you need admin permissions): https://guides.cloud.infn.it/docs/users-guides/en/latest/users_guides/sysadmin/compute/k8s.html
 
-First
+First:
 ```bash
 git clone git@github.com:ICSC-Spoke2-repo/HighRateAnalysis-WP5.git
 cd HighRateAnalysis-WP5
